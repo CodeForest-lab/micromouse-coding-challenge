@@ -8,3 +8,7 @@ wheels/
 
 # Virtual environments
 .venv
+
+# generated mazes
+maze/maze_*/
+maze/tests/maze_*/

@@ -7,7 +7,9 @@ The maze map file format is very simple. Each position on the maze will be assig
 - `bit2` = south
 - `bit3` = west
 
-So for example `A` has binary representation `b0100_0001` which means there is a wall to the north but no walls to the east, south or west. `G`on the other hand has binary representation `b0100_0111` which means that the only direction the mouse could walk is west because there are walls to the north, east and south. 
+So for example `A` has binary representation `b0100_0001` which means there is a wall to the north but no walls to the east, south or west. `G`on the other hand has binary representation `b0100_0111` which means that the only direction the mouse could walk is west because there are walls to the north, east and south.
+
+The `@` character is special and represents binary `b0100_0000` meaning a position with no walls in any direction. In the same way   `` ` `` represents biary `b0110_0000` which is a position with no walls and it is the target position.
 
 `Bit5` is used to indicate if the position is the target. From the table bellow you can see that setting this bit to 1 is equivelent to setting the character as lower case.
 
