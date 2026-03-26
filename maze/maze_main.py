@@ -10,6 +10,7 @@ from maze.maze_generators import (
 )
 from maze.maze_io import save_maze, load_maze
 from maze.maze_gui import MazeGUI
+from maze.maze_tools import generate_until_interesting
 
 
 def parse_pair(value):
@@ -70,7 +71,7 @@ def main_generate_gui(config, size):
 
     rows, cols = size
     maze = Maze(rows, cols, generator)
-    maze.generate()
+    generate_until_interesting(maze)
 
     root = tk.Tk()
     root.title("Maze Generator (GUI)")
@@ -86,7 +87,7 @@ def main_generate_cli(config, size, count):
         generator = MazeGeneratorCLI(config)
 
         maze = Maze(rows, cols, generator)
-        maze.generate()
+        generate_until_interesting(maze)
 
         folder = save_maze(maze)
         print(f"Saved {folder}/map.txt")
@@ -97,7 +98,7 @@ def main_view(raw_path):
     rows, cols, generator = load_maze(file_path)
 
     maze = Maze(rows, cols, generator)
-    maze.generate()
+    generate_until_interesting(maze)
 
     root = tk.Tk()
     root.title(f"Viewing {file_path}")

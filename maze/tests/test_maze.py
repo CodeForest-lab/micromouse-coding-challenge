@@ -3,6 +3,7 @@ from collections import deque
 
 from maze.maze_core import Maze
 from maze.maze_generators import MazeGeneratorCLI, MazeGeneratorGUI, GeneratorConfig
+from maze.maze_tools import generate_until_interesting
 
 
 # ---------- FIXTURE ----------
@@ -97,5 +98,14 @@ def test_various_sizes(size):
     generator = MazeGeneratorCLI()
     maze = Maze(rows, cols, generator)
     maze.generate()
+
+    assert len(maze.get_targets()) == 1
+
+@pytest.mark.parametrize("size", [(5,5), (10,10), (20,20)])
+def test_various_sizes_interesting(size):
+    rows, cols = size
+    generator = MazeGeneratorCLI()
+    maze = Maze(rows, cols, generator)
+    generate_until_interesting(maze)
 
     assert len(maze.get_targets()) == 1

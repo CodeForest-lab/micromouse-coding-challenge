@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import messagebox
 
 from maze.maze_io import save_maze 
+from maze.maze_tools import generate_until_interesting
 
 
 class MazeGUI:
@@ -70,7 +71,7 @@ class MazeGUI:
 
     def regenerate(self):
         self.maze.generator.config.loops = self.loops_var.get()
-        self.maze.generate()
+        generate_until_interesting(self.maze)
         self.draw()
 
     def save_maze_gui(self):
