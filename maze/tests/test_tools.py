@@ -43,9 +43,9 @@ def test_fastest_vs_shortest(size):
     assert path_cost(fp) <= path_cost(sp)
 
 @pytest.mark.parametrize("size", [(5,5), (10,10), (20,20), (40,40), (100,100)])
-def test_generate_until_interesting(size):
+def test_generate_until_interesting_loops(size):
     rows, cols = size
-    config = GeneratorConfig(loops=False)
+    config = GeneratorConfig(loops=True)
     generator = MazeGeneratorCLI(config)
     maze = Maze(rows, cols, generator)
     if (generate_until_interesting(maze)):
@@ -53,3 +53,5 @@ def test_generate_until_interesting(size):
         fp = fastest_path(maze)
         
         assert path_cost(fp) < path_cost(sp)
+    else:
+        pytest.skip("Unable to generate an 'interesting' maze")
