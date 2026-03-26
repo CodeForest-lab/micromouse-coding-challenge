@@ -33,18 +33,18 @@ def test_corner_to_coord_invalid():
     assert corner_to_coord(99, 10, 10) is None
 
 def test_parse_view_path_full_file():
-    path = "maze/maze_1/map.txt"
+    path = "output/maze_1/map.txt"
     assert parse_view_path(path) == path
 
 
 def test_parse_view_path_folder():
-    path = "maze/maze_1"
-    assert parse_view_path(path) == "maze/maze_1/map.txt"
+    path = "output/maze_1"
+    assert parse_view_path(path) == "output/maze_1/map.txt"
 
 
 def test_parse_view_path_short_name():
-    path = "maze_1"
-    assert parse_view_path(path) == "maze/maze_1/map.txt"
+    path = "maze_2"
+    assert parse_view_path(path) == "output/maze_2/map.txt"
 
 def test_parse_args_generate(monkeypatch):
     monkeypatch.setattr(

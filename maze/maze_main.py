@@ -79,7 +79,7 @@ def main_generate_gui(config, size):
     root.mainloop()
 
 def main_generate_cli(config, size, count):
-    os.makedirs("maze", exist_ok=True)
+    os.makedirs("output", exist_ok=True)
 
     rows, cols = size
     for i in range(count):
@@ -112,7 +112,7 @@ def parse_view_path(raw_path: str) -> str:
     elif "/" in raw_path:
         file_path = os.path.join(raw_path, "map.txt")
     else:
-        file_path = os.path.join("maze", raw_path, "map.txt")
+        file_path = os.path.join("output", raw_path, "map.txt")
 
     return file_path
 

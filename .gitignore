@@ -10,5 +10,5 @@ wheels/
 .venv
 
 # generated mazes
-maze/maze_*/
+output/
 maze/tests/maze_*/

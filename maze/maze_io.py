@@ -1,5 +1,6 @@
 import os
 import re
+import sys
 
 from maze.maze_generators import MazeGeneratorFromFile
 
@@ -46,7 +47,7 @@ def _maze_to_ascii(maze):
     return lines
 
 
-def save_maze(maze, base_dir="maze"):
+def save_maze(maze, base_dir="output"):
     index = get_index(base_dir)
     folder_name = f"maze_{index}"
     folder_path = os.path.join(base_dir, folder_name)
@@ -84,8 +85,12 @@ def get_index(base_dir):
 # --------------------------------------------------
 
 def load_maze(file_path):
-    with open(file_path, "r") as f:
-        lines = [line.strip() for line in f.readlines()]
+    try:
+        with open(file_path, "r") as f:
+            lines = [line.strip() for line in f.readlines()]
+    except OSError:
+        print("Unable to open file: ", file_path)
+        sys.exit()
 
     rows = len(lines)
     cols = len(lines[0])
