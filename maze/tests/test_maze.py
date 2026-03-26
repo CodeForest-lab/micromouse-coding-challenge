@@ -2,14 +2,23 @@ import pytest
 from collections import deque
 
 from maze.maze_core import Maze
-from maze.maze_generators import MazeGeneratorCLI
+from maze.maze_generators import MazeGeneratorCLI, MazeGeneratorGUI, GeneratorConfig
 
 
 # ---------- FIXTURE ----------
 
 @pytest.fixture
 def maze():
-    generator = MazeGeneratorCLI(loops=False)
+    config = GeneratorConfig(loops=False)
+    generator = MazeGeneratorCLI(config)
+    m = Maze(10, 10, generator)
+    m.generate()
+    return m
+
+@pytest.fixture
+def maze_gui():
+    config = GeneratorConfig(loops=False)
+    generator = MazeGeneratorGUI(config)
     m = Maze(10, 10, generator)
     m.generate()
     return m
@@ -20,6 +29,8 @@ def maze():
 def test_start_exists(maze):
     assert maze.start is not None
 
+def test_start_exists_gui(maze_gui):
+    assert maze_gui.start is not None
 
 def test_single_target(maze):
     targets = maze.get_targets()

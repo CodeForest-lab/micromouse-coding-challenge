@@ -26,7 +26,6 @@ class MazeGUI:
         self.control_frame.pack()
 
         if self._is_gui_generator():
-            print("is gui generator")
             self._build_controls()
 
         self.draw()
@@ -36,7 +35,6 @@ class MazeGUI:
     # --------------------------------------------------
 
     def _is_gui_generator(self):
-        print(self.maze.generator.__class__.__name__)
         return self.maze.generator.__class__.__name__ == "MazeGeneratorGUI"
 
     # --------------------------------------------------
@@ -48,7 +46,7 @@ class MazeGUI:
 
         # ---- LOOPS CHECKBOX ----
         self.loops_var = tk.BooleanVar(
-            value=self.maze.generator.config.get("loops", False)
+            value=self.maze.generator.config.loops
         )
 
         tk.Checkbutton(
@@ -71,7 +69,7 @@ class MazeGUI:
         ).pack()
 
     def regenerate(self):
-        self.maze.generator.config["loops"] = self.loops_var.get()
+        self.maze.generator.config.loops = self.loops_var.get()
         self.maze.generate()
         self.draw()
 

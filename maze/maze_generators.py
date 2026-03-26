@@ -1,20 +1,24 @@
 import random
+from dataclasses import dataclass
 
+
+@dataclass
+class GeneratorConfig:
+    loops: bool = False
+    target: tuple[int] = None
+    start: tuple[int] = None
 
 class MazeGenerator:
     def generate(self, maze):
         raise NotImplementedError
-
 
 # --------------------------------------------------
 # CLI GENERATOR (Prim-based)
 # --------------------------------------------------
 
 class MazeGeneratorCLI(MazeGenerator):
-    def __init__(self, loops=False, target=None, start=None):
-        self.loops = loops
-        self.target = target
-        self.start = start
+    def __init__(self, config: GeneratorConfig = None):
+        self.config = config if config else GeneratorConfig()
 
     def generate(self, maze):
         self.reset_visited(maze)
@@ -48,7 +52,7 @@ class MazeGeneratorCLI(MazeGenerator):
                 self.add_frontier(maze, new_r, new_c, frontier)
 
         # Optional loops
-        if self.loops:
+        if self.config.loops:
             self.add_loops(maze)
 
         # Set target + start
@@ -76,8 +80,8 @@ class MazeGeneratorCLI(MazeGenerator):
         rows, cols = maze.rows, maze.cols
 
         # Start
-        if self.start:
-            maze.start = self.start
+        if self.config.start:
+            maze.start = self.config.start
         else:
             maze.start = random.choice([
                 (0, 0),
@@ -87,8 +91,8 @@ class MazeGeneratorCLI(MazeGenerator):
             ])
 
         # Target
-        if self.target:
-            tr, tc = self.target
+        if self.config.target:
+            tr, tc = self.config.target
         else:
             tr, tc = rows // 2, cols // 2
 
@@ -128,15 +132,10 @@ class MazeGeneratorFromFile(MazeGenerator):
 # --------------------------------------------------
 
 class MazeGeneratorGUI(MazeGenerator):
-    def __init__(self, config):
-        self.config = config
+    def __init__(self, config: GeneratorConfig = None):
+        self.config = config if config else GeneratorConfig()
 
     def generate(self, maze):
         # Just reuse CLI generator logic
-        generator = MazeGeneratorCLI(
-            loops=self.config.get("loops", False),
-            target=self.config.get("target"),
-            start=self.config.get("start")
-        )
-
+        generator = MazeGeneratorCLI(self.config)
         generator.generate(maze)

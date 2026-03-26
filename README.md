@@ -37,12 +37,50 @@ An optional visualization tool is available at:
 ## How it works 
 
 ### Generating the maze
-The repo includes a file called `generate_maze.py`. This file can be ran in cli or graphical mode to generate mazes. An example maze is already generated to start with in the reposetory under the `/maze` directory. In there is also a [README.md](./maze/README.md) file containing the information on the maze file format. This knowledge is not needed for contestents.
+The repo includes a file called `maze.py`. This file can be ran in cli or graphical mode to generate mazes. An example maze is already generated to start with in the reposetory under the `/maze` directory. In there is also a [README.md](./maze/README.md) file containing the information on the maze file format. This knowledge is not needed for contestents.
 
-There are multiple parameters that can be passed to the `generate_maze.py` program including:
-- `--size <x>,<y>` for the size of a 
-- `--target-coordinates <x>,<y>` to set coordinate of the target room
-- `--loops` for allowing loops in the maze
-- `--set-start <corner_number>` where the the `corner_number` is  1, 2, 3 or 4 starting from the top right corner and going clockwise.
-- `--count <number>` where `number` is the number of mazes to generate
-- `--gui` to launch the graphical user interface. (will ignore `--count`)
+There are multiple parameters that can be passed to the `maze.py` program. Run `-h` or `--help` to show what the parameters are.
+
+#### Examples:
+To generate a standard maze of size 20x20:
+```sh
+python maze.py --generate
+```
+To generate 4 mazes of size 30x30 with posibility for loops in the maze (harder):
+```sh
+python maze.py --generate --size 30,30 --count 4 --loops
+```
+To generate a maze with standard parameters using the GUI to visualize:
+```sh
+python maze.py --generate --gui
+```
+
+#### Output
+When a maze is generated it creates a folder under the `output/` with the name `maze_<index>/`. Index with be whatever the highest current index + 1. In that folder a `map.txt` file will be created to store the saved maze data. When a run using your algorithem is done, the results and steps that your solution took will also be saved in this folder so that both the map and run data are kept together and separated from different runs.
+
+If you have multiple mazes it could look something like this:
+
+```
+output/
+|-maze_1/
+    |-map.txt
+|-maze_2/
+    |-map.txt
+```
+
+### Viewing a maze
+The `maze.py` file also includes functionality for looking at a saved maze. This is done through the `--view` argument. Here you can pass the saved maze in one of three ways; through the path to the `map.txt` file, with a path to the `maze_<index>` folder or since the application expects the maze folders to be in `output/`, you can just give the name of the maze folder `maze_<index>`.
+
+#### Examples:
+Using just the maze name (easiest way): 
+```sh
+python maze.py --view maze_1
+```
+Using the path to the maze folder: 
+```sh
+python maze.py --view output/maze_1/
+```
+Using the path to the maze map file: 
+```sh
+python maze.py --view output/maze_1/map.txt
+```
