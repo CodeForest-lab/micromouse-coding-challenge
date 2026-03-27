@@ -1,9 +1,12 @@
 [project]
 name = "micromouse"
-version = "0.1.1"
-description = "Add your description here"
+version = "0.2.0"
+description = "This is a coding challenge adaptation of the robotic Micromouse challenge."
 readme = "README.md"
 requires-python = ">=3.9"
 dependencies = [
     "pytest",
 ]
+
+[tool.setuptools]
+packages = ["maze"]
