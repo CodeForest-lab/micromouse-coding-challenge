@@ -48,12 +48,12 @@ To generate a standard maze of size 20x20 to use starting to develop your soluti
 python maze.py --generate
 ```
 
-To view the maze run:
+To view the maze, run:
 ```sh
 python maze.py --view maze_<index of maze>
 ```
 
-To run your solution on the maze just run:
+To run your solution on the maze, just run:
 ```sh
 python maze.py --run maze_<index of maze> --solution solution.py
 ```
