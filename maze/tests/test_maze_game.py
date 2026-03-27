@@ -2,7 +2,7 @@ import os
 import pytest
 
 from maze.maze_core import Maze
-from maze.maze_generators import MazeGeneratorCLI
+from maze.maze_generators import MazeGeneratorCLI, GeneratorConfig
 from maze.maze_game import GameRunner
 
 
@@ -255,14 +255,15 @@ def test_invalid_direction_raises():
 
 
 def test_wall_collision_raises():
-    maze = Maze(5, 5, MazeGeneratorCLI())
+    maze_size = 5
+    maze = Maze(maze_size, maze_size, MazeGeneratorCLI())
     maze.generate()
 
     runner = GameRunner(maze, WallCrashSolution)
 
     with pytest.raises(ValueError):
-        runner.step("phase1")
-        runner.step("phase1")
+        for _ in range(maze_size + 1):
+            runner.step("phase1")
 
 # --------------------------------------------------
 # Tick cost behavior
