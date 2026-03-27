@@ -40,6 +40,12 @@ class WallCrashSolution:
     def get_step(self, cell):
         return "top"  # often invalid (wall)
 
+class StopSolution:
+    teamname = "stop"
+
+    def get_step(self, cell):
+        return "stop"
+
 class FullSolution:
     teamname = "reference"
 
@@ -235,10 +241,16 @@ def test_step_moves_position():
     runner = GameRunner(maze, DummySolution)
 
     start = runner.pos
-    runner.step("phase1")
+    assert runner.step("phase1") == True
 
     assert runner.pos != start
 
+def test_stop_command_step():
+    maze = Maze(5, 5, MazeGeneratorCLI())
+    maze.generate()
+
+    runner = GameRunner(maze, StopSolution)
+    assert runner.step("phase1") == False
 
 # --------------------------------------------------
 # Invalid move handling
@@ -296,6 +308,16 @@ def test_run_completes_and_creates_file(tmp_path):
 
     assert os.path.exists(result_file)
 
+def test_run_completes_and_creates_file_stop_command(tmp_path):
+    maze = Maze(10, 10, MazeGeneratorCLI())
+    maze.generate()
+
+    os.chdir(tmp_path)
+
+    runner = GameRunner(maze, StopSolution)
+    result_file = runner.run()
+
+    assert os.path.exists(result_file)
 
 # --------------------------------------------------
 # Output file format

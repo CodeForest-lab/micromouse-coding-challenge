@@ -32,12 +32,18 @@ class GameRunner:
         view = self.build_cell_view(r, c)
 
         move = self.solution.get_step(view)
+        
+        if move == "stop":
+            print("Stop command recived!")
+            return False
 
         if move not in DIRECTIONS:
             raise ValueError(f"Invalid move: {move}")
+            return False
 
         if self.maze.get_cell(r, c).walls[move]:
             raise ValueError("Tried to walk through wall")
+            return False
 
         dr, dc = DIR_VECTORS[move]
         nr, nc = r + dr, c + dc
@@ -53,6 +59,8 @@ class GameRunner:
 
         # record
         self.history.append((self.tick, nr, nc, phase))
+
+        return True
     
     def run_phase(self, phase, stop_condition):
         steps = 0
@@ -63,7 +71,8 @@ class GameRunner:
             if stop_condition():
                 return True
 
-            self.step(phase)
+            if not self.step(phase):
+                return False
             steps += 1
 
         return False  # timeout
