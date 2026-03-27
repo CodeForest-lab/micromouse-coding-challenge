@@ -24,7 +24,7 @@ class Solution:
 
     The boolean value for the walls represents if there is a wall in that direction at the 
     current cell. This means trying to take a step in a direction where the value walls 
-    dictionary is True is invalud.  
+    dictionary is True is an invalid move and will cause the run to crash.  
     """
     def get_step(self, cell: dict):
         

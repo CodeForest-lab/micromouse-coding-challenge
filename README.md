@@ -2,6 +2,11 @@
 
 This is a coding challenge adaptation of the robotic [Micromouse](https://en.wikipedia.org/wiki/Micromouse) challenge. 
 
+To visualize the results of multiple teams at once, check out [Maze Visualizer](https://github.com/Rahlback/maze-visualizer). 
+
+To just get started quickly, skip to [Quick Start](#quick-start) section.
+
+## Introduction
 The challenge consists of creating an algorithm to navigate a maze in the fastest time possible. The "mouse" starts in a random corner and needs to navigate to a "room" somewhere in the maze. In this digital adaptation, the clock is represented by game ticks. At every point in the maze the mouse can make a move in at least one direction. Each move costs a game tick and to simmulate that in real life some moves take longer time for a robot to perform, the cost of moves in the game is varying. This means that the shortest route not always means the fastest.
 - Going in a straight line costs **1 tick**
 - Making a turn costs **3 ticks**
@@ -33,6 +38,26 @@ The code contains three parts:
 - The solution algorithm 
 
 An optional visualization tool is available at: 
+
+## Quick Start
+
+As a competitor, you only need to edit the [solution.py](solution.py) file. This contains the Solution class and specifically the `get_step()` method that is entry point into your algorithm.
+
+To generate a standard maze of size 20x20 to use starting to develop your solution:
+```sh
+python maze.py --generate
+```
+
+To view the maze run:
+```sh
+python maze.py --view maze_<index of maze>
+```
+
+To run your solution on the maze just run:
+```sh
+python maze.py --run maze_<index of maze> --solution solution.py
+```
+
 
 ## How it works 
 
