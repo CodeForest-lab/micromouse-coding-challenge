@@ -36,6 +36,10 @@ def _maze_to_ascii(maze):
             if cell.walls["left"]:
                 value |= 1 << 3
 
+            # bit4 = start
+            if (r, c) == maze.start :
+                value |= 1 << 4               
+
             # bit5 = target
             if cell.is_target:
                 value |= 1 << 5
@@ -110,15 +114,30 @@ def load_maze(file_path):
                 "left": bool(value & (1 << 3)),
             }
 
+            is_start = bool(value & (1 << 4))
             is_target = bool(value & (1 << 5))
 
             row.append({
                 "walls": walls,
-                "target": is_target
+                "target": is_target,
+                "start": is_start
             })
 
         grid_data.append(row)
 
-    generator = MazeGeneratorFromFile(grid_data)
+    generator = MazeGeneratorFromFile(grid_data, os.path.dirname(file_path))
 
     return rows, cols, generator
+
+def load_run_file(path):
+    with open(path, "r") as f:
+        lines = f.readlines()
+
+    scores = lines[0].strip()
+    moves = []
+
+    for line in lines[1:]:
+        tick, r, c, phase = line.strip().split(",")
+        moves.append((int(tick), int(r), int(c), phase))
+
+    return scores, moves

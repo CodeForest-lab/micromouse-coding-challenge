@@ -109,8 +109,9 @@ class MazeGeneratorCLI(MazeGenerator):
 # --------------------------------------------------
 
 class MazeGeneratorFromFile(MazeGenerator):
-    def __init__(self, grid_data):
+    def __init__(self, grid_data, maze_dir):
         self.grid_data = grid_data
+        self.maze_dir = maze_dir
 
     def generate(self, maze):
         for r in range(maze.rows):
@@ -123,9 +124,8 @@ class MazeGeneratorFromFile(MazeGenerator):
                 if data["target"]:
                     maze.set_target(r, c)
 
-        # Start is undefined unless stored later
-        maze.start = None
-
+                if data["start"]:
+                    maze.start = (r,c)
 
 # --------------------------------------------------
 # GUI GENERATOR (wrapper)

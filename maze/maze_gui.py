@@ -29,7 +29,8 @@ class MazeGUI:
         if self._is_gui_generator():
             self._build_controls()
 
-        self.draw()
+        self.draw_base()
+        self.draw_markers()
 
     # --------------------------------------------------
     # GENERATOR TYPE CHECK
@@ -72,7 +73,8 @@ class MazeGUI:
     def regenerate(self):
         self.maze.generator.config.loops = self.loops_var.get()
         generate_until_interesting(self.maze)
-        self.draw()
+        self.draw_base()
+        self.draw_markers()
 
     def save_maze_gui(self):
         try:
@@ -80,18 +82,28 @@ class MazeGUI:
             messagebox.showinfo("Saved", f"Maze saved to {folder}/map.txt")
         except Exception as e:
             messagebox.showerror("Error", str(e))
+    
+    def update_phase_view(self, *_):
+        self.draw_base()
+
+        phase = self.phase_var.get()
+        if hasattr(self, "paths") and phase in self.paths:
+            self._draw_path(self.paths[phase], color="blue")
+
+        self.draw_markers()
 
     # --------------------------------------------------
     # DRAWING
     # --------------------------------------------------
 
-    def draw(self):
+    def draw_base(self):
         self.canvas.delete("all")
 
         for r in range(self.rows):
             for c in range(self.cols):
                 self._draw_cell(r, c)
 
+    def draw_markers(self):
         self._draw_start()
         self._draw_target()
 
@@ -116,6 +128,10 @@ class MazeGUI:
             )
         if cell.walls["left"]:
             self.canvas.create_line(x, y, x, y + self.cell_size)
+
+    def _draw_path(self, path, color="orange"):
+        for (r, c) in path:
+            self._fill_cell(r, c, color)
 
     # --------------------------------------------------
     # START / TARGET
@@ -148,6 +164,27 @@ class MazeGUI:
     # FUTURE: PATH DRAWING
     # --------------------------------------------------
 
-    def draw_path(self, path, color="orange"):
-        for (r, c) in path:
-            self._fill_cell(r, c, color)
+
+    
+    def set_paths(self, moves):
+        self.paths = {
+            "phase1": [],
+            "return": [],
+            "phase2": []
+        }
+
+        for _, r, c, phase in moves:
+            self.paths[phase].append((r, c))
+
+        self.phase_var = tk.StringVar(value="phase1")
+        
+        tk.Label(self.control_frame, text="View Phase").pack()
+
+        tk.OptionMenu(
+            self.control_frame,
+            self.phase_var,
+            "phase1", "return", "phase2",
+            command=self.update_phase_view
+        ).pack()
+
+        self.update_phase_view()

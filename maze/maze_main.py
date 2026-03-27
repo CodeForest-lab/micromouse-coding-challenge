@@ -1,6 +1,7 @@
 import argparse
 import os
 import tkinter as tk
+import importlib.util
 
 from maze.maze_core import Maze
 from maze.maze_generators import (
@@ -8,9 +9,10 @@ from maze.maze_generators import (
     MazeGeneratorGUI,
     GeneratorConfig,
 )
-from maze.maze_io import save_maze, load_maze
+from maze.maze_io import save_maze, load_maze, load_run_file
 from maze.maze_gui import MazeGUI
 from maze.maze_tools import generate_until_interesting
+from maze.maze_game import GameRunner
 
 
 def parse_pair(value):
@@ -38,6 +40,10 @@ def parse_args():
     mode = parser.add_mutually_exclusive_group(required=True)
     mode.add_argument("--generate", action="store_true")
     mode.add_argument("--view", type=str, help="Path to map.txt")
+    mode.add_argument("--run", type=str, help="Run solution on maze")
+
+    parser.add_argument("--solution", type=str,
+                        help="Path to solution file")
 
     parser.add_argument("--gui", action="store_true",
                         help="Use GUI for generation")
@@ -117,6 +123,40 @@ def parse_view_path(raw_path: str) -> str:
 
     return file_path
 
+def main_run(maze_path, solution_path, use_gui):
+    rows, cols, generator = load_maze(parse_view_path(maze_path))
+
+    maze = Maze(rows, cols, generator)
+    maze.generate()
+
+    SolutionClass = load_solution(solution_path)
+
+    runner = GameRunner(maze, SolutionClass)
+    result_file = runner.run()
+
+    print(f"Result saved to {result_file}")
+
+    if use_gui:
+        launch_result_gui(maze, result_file)
+
+def load_solution(path):
+    spec = importlib.util.spec_from_file_location("solution", path)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+
+    return module.Solution
+
+def launch_result_gui(maze, result_file):
+    scores, moves = load_run_file(result_file)
+
+    root = tk.Tk()
+    root.title(f"Result Viewer ({scores})")
+
+    gui = MazeGUI(root, maze)
+    gui.set_paths(moves)
+
+    root.mainloop()
+
 def main(args):
 
     if args.generate:
@@ -135,3 +175,6 @@ def main(args):
 
     elif args.view:
         main_view(args.view)
+
+    elif args.run:
+        main_run(args.run, args.solution, args.gui)

@@ -180,5 +180,4 @@ def generate_until_interesting(maze):
         if is_interesting_maze(maze):
             return True
     else:
-        print("Warning: could not generate interesting maze")
         return False
