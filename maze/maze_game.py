@@ -108,8 +108,15 @@ class GameRunner:
     def finish(self, score1, score2):
         team = getattr(self.solution, "teamname", "unknown")
 
+        output_dir = "output"
+        os.makedirs(output_dir, exist_ok=True)
+
+        if hasattr(self.maze.generator, "maze_dir"):
+            output_dir = self.maze.generator.maze_dir
+
         filename = f"team_{team}.txt"
-        file_path = os.path.join(self.maze.generator.maze_dir, filename)
+        file_path = os.path.join(output_dir, filename)
+        print("file_path: ", file_path)
         with open(file_path, "w") as f:
             s1 = score1 if score1 is not None else -1
             s2 = score2 if score2 is not None else -1
