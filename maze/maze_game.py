@@ -57,6 +57,8 @@ class GameRunner:
     def run_phase(self, phase, stop_condition):
         steps = 0
 
+        self.history.append((0, *self.pos, phase))
+
         while steps < self.max_steps:
             if stop_condition():
                 return True
