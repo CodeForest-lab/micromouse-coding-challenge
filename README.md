@@ -55,7 +55,7 @@ python maze.py --view maze_<index of maze>
 
 To run your solution on the maze, just run:
 ```sh
-python maze.py --run maze_<index of maze> --solution solution.py
+python maze.py --run maze_<index of maze> --solution solution.py --gui
 ```
 
 
