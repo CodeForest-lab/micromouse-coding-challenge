@@ -22,7 +22,7 @@ def parse_result(file_path):
 
     phases = set()
     for line in lines[1:]:
-        _, _, _, phase = line.strip().split(",")
+        _, _, _, phase, _ = line.strip().split(",")
         phases.add(phase)
 
     return score1, score2, phases
