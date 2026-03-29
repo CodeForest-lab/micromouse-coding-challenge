@@ -35,7 +35,8 @@ class GameRunner:
 
         move_r = self.solution.get_step(view)
         if type(move_r) is list:
-            move = move_r[0]
+            if len(move_r) > 0:
+                move = move_r[0]
             if len(move_r) > 1:
                 extra_string = move_r[1]
         else:
