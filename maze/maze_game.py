@@ -28,11 +28,19 @@ class GameRunner:
     
     def step(self, phase):
         r, c = self.pos
+        extra_string = " "
+        move = ""
 
         view = self.build_cell_view(r, c)
 
-        move = self.solution.get_step(view)
-        
+        move_r = self.solution.get_step(view)
+        if type(move_r) is list:
+            move = move_r[0]
+            if len(move_r) > 1:
+                extra_string = move_r[1]
+        else:
+            move = move_r
+            
         if move == "stop":
             print("Stop command recived!")
             return False
@@ -58,14 +66,14 @@ class GameRunner:
         self.visited.add((nr, nc))
 
         # record
-        self.history.append((self.tick, nr, nc, phase))
+        self.history.append((self.tick, nr, nc, phase, extra_string))
 
         return True
     
     def run_phase(self, phase, stop_condition):
         steps = 0
 
-        self.history.append((0, *self.pos, phase))
+        self.history.append((0, *self.pos, phase, ""))
 
         while steps < self.max_steps:
             if stop_condition():
@@ -134,7 +142,7 @@ class GameRunner:
 
             f.write(f"{s1},{s2}\n")
 
-            for tick, r, c, phase in self.history:
-                f.write(f"{tick},{r},{c},{phase}\n")
+            for tick, r, c, phase, extra_string in self.history:
+                f.write(f"{tick},{r},{c},{phase},{extra_string}\n")
 
         return file_path
