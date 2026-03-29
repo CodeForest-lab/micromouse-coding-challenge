@@ -342,7 +342,7 @@ def test_output_file_format(tmp_path):
     # Remaining lines = moves
     for line in lines[1:]:
         parts = line.strip().split(",")
-        assert len(parts) == 4
+        assert len(parts) == 5
 
 
 # --------------------------------------------------
