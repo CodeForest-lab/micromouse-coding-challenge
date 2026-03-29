@@ -374,7 +374,7 @@ def test_history_records_moves():
 
     assert len(runner.history) == 1
 
-    tick, r, c, phase = runner.history[0]
+    tick, r, c, phase, extra_string = runner.history[0]
 
     assert isinstance(tick, int)
     assert isinstance(r, int)
