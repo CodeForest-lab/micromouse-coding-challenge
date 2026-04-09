@@ -8,6 +8,7 @@ from maze.maze_tools import generate_until_interesting
 
 # ---------- FIXTURE ----------
 
+
 @pytest.fixture
 def maze():
     config = GeneratorConfig(loops=False)
@@ -15,6 +16,7 @@ def maze():
     m = Maze(10, 10, generator)
     m.generate()
     return m
+
 
 @pytest.fixture
 def maze_gui():
@@ -27,11 +29,14 @@ def maze_gui():
 
 # ---------- TESTS ----------
 
+
 def test_start_exists(maze):
     assert maze.start is not None
 
+
 def test_start_exists_gui(maze_gui):
     assert maze_gui.start is not None
+
 
 def test_single_target(maze):
     targets = maze.get_targets()
@@ -92,7 +97,7 @@ def test_target_reachable(maze):
     pytest.fail("Target is not reachable from start")
 
 
-@pytest.mark.parametrize("size", [(5,5), (10,10), (20,20)])
+@pytest.mark.parametrize("size", [(5, 5), (10, 10), (20, 20)])
 def test_various_sizes(size):
     rows, cols = size
     generator = MazeGeneratorCLI()
@@ -101,7 +106,8 @@ def test_various_sizes(size):
 
     assert len(maze.get_targets()) == 1
 
-@pytest.mark.parametrize("size", [(5,5), (10,10), (20,20)])
+
+@pytest.mark.parametrize("size", [(5, 5), (10, 10), (20, 20)])
 def test_various_sizes_interesting(size):
     rows, cols = size
     generator = MazeGeneratorCLI()

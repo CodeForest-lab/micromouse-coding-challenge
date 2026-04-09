@@ -1,6 +1,7 @@
 import os
 
-from maze.maze_tools import compute_cost, DIRECTIONS, DIR_VECTORS, OPPOSITE
+from maze.maze_tools import compute_cost, DIRECTIONS, DIR_VECTORS
+
 
 class GameRunner:
     def __init__(self, maze, solution_class):
@@ -16,16 +17,12 @@ class GameRunner:
         self.visited = set()
 
         self.max_steps = 2 * maze.rows * maze.cols
-    
 
     def build_cell_view(self, r, c):
         cell = self.maze.get_cell(r, c)
 
-        return {
-            "walls": cell.walls.copy(),
-            "target": cell.is_target
-        }
-    
+        return {"walls": cell.walls.copy(), "target": cell.is_target}
+
     def step(self, phase):
         r, c = self.pos
         extra_string = " "
@@ -41,7 +38,7 @@ class GameRunner:
                 extra_string = move_r[1]
         else:
             move = move_r
-            
+
         if move == "stop":
             print("Stop command recived!")
             return False
@@ -70,7 +67,7 @@ class GameRunner:
         self.history.append((self.tick, nr, nc, phase, extra_string))
 
         return True
-    
+
     def run_phase(self, phase, stop_condition):
         steps = 0
 
@@ -85,16 +82,13 @@ class GameRunner:
             steps += 1
 
         return False  # timeout
-    
+
     def run(self):
         start = self.maze.start
         target = list(self.maze.get_targets())[0]
 
         # ---------- PHASE 1 ----------
-        reached = self.run_phase(
-            "phase1",
-            lambda: self.pos == target
-        )
+        reached = self.run_phase("phase1", lambda: self.pos == target)
 
         score1 = self.tick if reached else None
 
@@ -102,10 +96,7 @@ class GameRunner:
             return self.finish(score1, None)
 
         # ---------- RETURN ----------
-        returned = self.run_phase(
-            "return",
-            lambda: self.pos == start
-        )
+        returned = self.run_phase("return", lambda: self.pos == start)
 
         if not returned:
             return self.finish(score1, None)
@@ -116,15 +107,12 @@ class GameRunner:
         # ---------- PHASE 2 ----------
         start_tick = self.tick
 
-        reached2 = self.run_phase(
-            "phase2",
-            lambda: self.pos == target
-        )
+        reached2 = self.run_phase("phase2", lambda: self.pos == target)
 
         score2 = self.tick - start_tick if reached2 else None
 
         return self.finish(score1, score2)
-    
+
     def finish(self, score1, score2):
         team = getattr(self.solution, "teamname", "unknown")
 

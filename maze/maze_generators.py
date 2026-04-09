@@ -8,13 +8,16 @@ class GeneratorConfig:
     target: tuple[int] = None
     start: tuple[int] = None
 
+
 class MazeGenerator:
     def generate(self, maze):
         raise NotImplementedError
 
+
 # --------------------------------------------------
 # CLI GENERATOR (Prim-based)
 # --------------------------------------------------
+
 
 class MazeGeneratorCLI(MazeGenerator):
     def __init__(self, config: GeneratorConfig = None):
@@ -83,12 +86,9 @@ class MazeGeneratorCLI(MazeGenerator):
         if self.config.start:
             maze.start = self.config.start
         else:
-            maze.start = random.choice([
-                (0, 0),
-                (0, cols - 1),
-                (rows - 1, 0),
-                (rows - 1, cols - 1)
-            ])
+            maze.start = random.choice(
+                [(0, 0), (0, cols - 1), (rows - 1, 0), (rows - 1, cols - 1)]
+            )
 
         # Target
         if self.config.target:
@@ -108,6 +108,7 @@ class MazeGeneratorCLI(MazeGenerator):
 # FROM FILE GENERATOR
 # --------------------------------------------------
 
+
 class MazeGeneratorFromFile(MazeGenerator):
     def __init__(self, grid_data, maze_dir):
         self.grid_data = grid_data
@@ -125,11 +126,13 @@ class MazeGeneratorFromFile(MazeGenerator):
                     maze.set_target(r, c)
 
                 if data["start"]:
-                    maze.start = (r,c)
+                    maze.start = (r, c)
+
 
 # --------------------------------------------------
 # GUI GENERATOR (wrapper)
 # --------------------------------------------------
+
 
 class MazeGeneratorGUI(MazeGenerator):
     def __init__(self, config: GeneratorConfig = None):

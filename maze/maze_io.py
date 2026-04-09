@@ -9,6 +9,7 @@ from maze.maze_generators import MazeGeneratorFromFile
 # SAVE
 # --------------------------------------------------
 
+
 def _maze_to_ascii(maze):
     lines = []
 
@@ -37,8 +38,8 @@ def _maze_to_ascii(maze):
                 value |= 1 << 3
 
             # bit4 = start
-            if (r, c) == maze.start :
-                value |= 1 << 4               
+            if (r, c) == maze.start:
+                value |= 1 << 4
 
             # bit5 = target
             if cell.is_target:
@@ -59,12 +60,13 @@ def save_maze(maze, base_dir="output"):
     os.makedirs(folder_path, exist_ok=True)
 
     file_path = os.path.join(folder_path, "map.txt")
-    
+
     with open(file_path, "w") as f:
         for line in _maze_to_ascii(maze):
             f.write(line + "\n")
 
     return folder_path
+
 
 def get_index(base_dir):
     pattern = re.compile(r"maze_(\d+)")
@@ -84,9 +86,11 @@ def get_index(base_dir):
 
     return next_index
 
+
 # --------------------------------------------------
 # LOAD
 # --------------------------------------------------
+
 
 def load_maze(file_path):
     try:
@@ -117,17 +121,14 @@ def load_maze(file_path):
             is_start = bool(value & (1 << 4))
             is_target = bool(value & (1 << 5))
 
-            row.append({
-                "walls": walls,
-                "target": is_target,
-                "start": is_start
-            })
+            row.append({"walls": walls, "target": is_target, "start": is_start})
 
         grid_data.append(row)
 
     generator = MazeGeneratorFromFile(grid_data, os.path.dirname(file_path))
 
     return rows, cols, generator
+
 
 def load_run_file(path):
     with open(path, "r") as f:

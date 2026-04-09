@@ -1,11 +1,6 @@
 class Cell:
     def __init__(self):
-        self.walls = {
-            "top": True,
-            "right": True,
-            "bottom": True,
-            "left": True
-        }
+        self.walls = {"top": True, "right": True, "bottom": True, "left": True}
         self.visited = False
         self.is_target = False
 
@@ -15,7 +10,7 @@ class Maze:
         self.rows = rows
         self.cols = cols
         self.grid = [[Cell() for _ in range(cols)] for _ in range(rows)]
-        self.start = None 
+        self.start = None
         self.generator = generator
 
     # ---------- GENERATION ----------
@@ -57,12 +52,7 @@ class Maze:
 
         self.grid[row][col].walls[direction] = False
 
-        opposite = {
-            "top": "bottom",
-            "bottom": "top",
-            "left": "right",
-            "right": "left"
-        }
+        opposite = {"top": "bottom", "bottom": "top", "left": "right", "right": "left"}
 
         self.grid[nr][nc].walls[opposite[direction]] = False
 

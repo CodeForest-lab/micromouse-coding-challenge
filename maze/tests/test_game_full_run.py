@@ -14,6 +14,7 @@ from maze.tests.test_maze_game import FullSolution
 # Helper
 # --------------------------------------------------
 
+
 def parse_result(file_path):
     with open(file_path, "r") as f:
         lines = f.readlines()
@@ -32,15 +33,19 @@ def parse_result(file_path):
 # Parametrized test over sizes
 # --------------------------------------------------
 
-@pytest.mark.parametrize("rows,cols", [
-    (5, 5),
-    (10, 10),
-    (20, 20),
-    (50, 50),
-    (50, 20),
-    (20, 70),
-    (100, 100),
-])
+
+@pytest.mark.parametrize(
+    "rows,cols",
+    [
+        (5, 5),
+        (10, 10),
+        (20, 20),
+        (50, 50),
+        (50, 20),
+        (20, 70),
+        (100, 100),
+    ],
+)
 def test_full_solution_completes_all_phases(tmp_path, rows, cols):
     os.chdir(tmp_path)
 

@@ -27,12 +27,13 @@ def parse_pair(value):
 
 def corner_to_coord(corner, rows, cols):
     corners = {
-        1: (0, cols - 1),          # top-right
-        2: (rows - 1, cols - 1),   # bottom-right
-        3: (rows - 1, 0),          # bottom-left
-        4: (0, 0),                 # top-left
+        1: (0, cols - 1),  # top-right
+        2: (rows - 1, cols - 1),  # bottom-right
+        3: (rows - 1, 0),  # bottom-left
+        4: (0, 0),  # top-left
     }
     return corners.get(corner)
+
 
 def parse_args():
     parser = argparse.ArgumentParser(description="Micromouse Maze Tool")
@@ -42,35 +43,34 @@ def parse_args():
     mode.add_argument("--view", type=str, help="Path to map.txt")
     mode.add_argument("--run", type=str, help="Run solution on maze")
 
-    parser.add_argument("--solution", type=str,
-                        help="Path to solution file")
+    parser.add_argument("--solution", type=str, help="Path to solution file")
 
-    parser.add_argument("--gui", action="store_true",
-                        help="Use GUI for generation")
+    parser.add_argument("--gui", action="store_true", help="Use GUI for generation")
 
-    parser.add_argument("--size", type=parse_pair,
-                        help="Maze size rows,cols")
+    parser.add_argument("--size", type=parse_pair, help="Maze size rows,cols")
 
-    parser.add_argument("--target-coordinates", type=parse_pair,
-                        help="Target cell row,col")
+    parser.add_argument(
+        "--target-coordinates", type=parse_pair, help="Target cell row,col"
+    )
 
-    parser.add_argument("--loops", action="store_true",
-                        help="Allow loops")
+    parser.add_argument("--loops", action="store_true", help="Allow loops")
 
-    parser.add_argument("--set-start", type=int, choices=[1, 2, 3, 4],
-                        help="Corner start (1-4)")
+    parser.add_argument(
+        "--set-start", type=int, choices=[1, 2, 3, 4], help="Corner start (1-4)"
+    )
 
-    parser.add_argument("--count", type=int, default=1,
-                        help="Number of mazes")
+    parser.add_argument("--count", type=int, default=1, help="Number of mazes")
 
     return parser.parse_args()
 
-def  main_generate(gui, config, size, count):
+
+def main_generate(gui, config, size, count):
 
     if gui:
         main_generate_gui(config, size)
     else:
         main_generate_cli(config, size, count)
+
 
 def main_generate_gui(config, size):
     generator = MazeGeneratorGUI(config)
@@ -85,6 +85,7 @@ def main_generate_gui(config, size):
     MazeGUI(root, maze)
     root.mainloop()
 
+
 def main_generate_cli(config, size, count):
     os.makedirs("output", exist_ok=True)
 
@@ -97,6 +98,7 @@ def main_generate_cli(config, size, count):
 
         folder = save_maze(maze)
         print(f"Saved {folder}/map.txt")
+
 
 def main_view(raw_path):
 
@@ -112,6 +114,7 @@ def main_view(raw_path):
     MazeGUI(root, maze)
     root.mainloop()
 
+
 def parse_view_path(raw_path: str) -> str:
 
     if ".txt" in raw_path and "/" in raw_path:
@@ -122,6 +125,7 @@ def parse_view_path(raw_path: str) -> str:
         file_path = os.path.join("output", raw_path, "map.txt")
 
     return file_path
+
 
 def main_run(maze_path, solution_path, use_gui):
     rows, cols, generator = load_maze(parse_view_path(maze_path))
@@ -139,12 +143,14 @@ def main_run(maze_path, solution_path, use_gui):
     if use_gui:
         launch_result_gui(maze, result_file)
 
+
 def load_solution(path):
     spec = importlib.util.spec_from_file_location("solution", path)
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
 
     return module.Solution
+
 
 def launch_result_gui(maze, result_file):
     scores, moves = load_run_file(result_file)
@@ -157,6 +163,7 @@ def launch_result_gui(maze, result_file):
 
     root.mainloop()
 
+
 def main(args):
 
     if args.generate:
@@ -165,12 +172,10 @@ def main(args):
         start = None
         if args.set_start:
             start = corner_to_coord(args.set_start, *size)
-        
+
         config = GeneratorConfig(
-            loops=args.loops,
-            target=args.target_coordinates,
-            start=start
-        ) 
+            loops=args.loops, target=args.target_coordinates, start=start
+        )
         main_generate(args.gui, config, size, args.count)
 
     elif args.view:

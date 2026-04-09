@@ -5,6 +5,8 @@ This is the solution class where you can add any methods or member variables you
 don't change the name of the class or the method get_step().
 However change the value of teamname to what you want your team to be called.
 """
+
+
 class Solution:
     teamname = "test_team"
 
@@ -26,13 +28,14 @@ class Solution:
     current cell. This means trying to take a step in a direction where the value walls 
     dictionary is True is an invalid move and will cause the run to crash.  
     """
+
     def get_step(self, cell: dict):
-        
-        # Simple test example, check which directions do not have a wall and then pick one 
+
+        # Simple test example, check which directions do not have a wall and then pick one
         # those directions randomly
         avail_directions = []
         for direction in cell["walls"]:
             if not cell["walls"][direction]:
                 avail_directions.append(direction)
 
-        return random.choice(avail_directions) 
+        return random.choice(avail_directions)

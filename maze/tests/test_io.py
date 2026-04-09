@@ -37,6 +37,7 @@ def test_save_and_load(tmp_path="maze/tests"):
 
     shutil.rmtree(folder_path)
 
+
 def test_load_run_file(tmp_path="maze/tests"):
-    #TODO: Create unit test to catch changes in the loading of run files
+    # TODO: Create unit test to catch changes in the loading of run files
     pytest.skip("Test not implemented yet")

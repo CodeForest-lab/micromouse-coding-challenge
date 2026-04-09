@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import messagebox
 
-from maze.maze_io import save_maze 
+from maze.maze_io import save_maze
 from maze.maze_tools import generate_until_interesting
 
 
@@ -15,10 +15,7 @@ class MazeGUI:
         self.cols = maze.cols
 
         self.canvas = tk.Canvas(
-            root,
-            width=self.cols * cell_size,
-            height=self.rows * cell_size,
-            bg="white"
+            root, width=self.cols * cell_size, height=self.rows * cell_size, bg="white"
         )
         self.canvas.pack()
 
@@ -47,27 +44,17 @@ class MazeGUI:
         tk.Label(self.control_frame, text="GUI Generator").pack()
 
         # ---- LOOPS CHECKBOX ----
-        self.loops_var = tk.BooleanVar(
-            value=self.maze.generator.config.loops
-        )
+        self.loops_var = tk.BooleanVar(value=self.maze.generator.config.loops)
 
         tk.Checkbutton(
-            self.control_frame,
-            text="Allow loops",
-            variable=self.loops_var
+            self.control_frame, text="Allow loops", variable=self.loops_var
         ).pack()
 
         # ---- BUTTONS ----
-        tk.Button(
-            self.control_frame,
-            text="Regenerate",
-            command=self.regenerate
-        ).pack()
+        tk.Button(self.control_frame, text="Regenerate", command=self.regenerate).pack()
 
         tk.Button(
-            self.control_frame,
-            text="Save Maze",
-            command=self.save_maze_gui
+            self.control_frame, text="Save Maze", command=self.save_maze_gui
         ).pack()
 
     def regenerate(self):
@@ -78,11 +65,13 @@ class MazeGUI:
 
     def save_maze_gui(self):
         try:
-            folder = save_maze(self.maze, )
+            folder = save_maze(
+                self.maze,
+            )
             messagebox.showinfo("Saved", f"Maze saved to {folder}/map.txt")
         except Exception as e:
             messagebox.showerror("Error", str(e))
-    
+
     def update_phase_view(self, *_):
         self.draw_base()
 
@@ -118,19 +107,17 @@ class MazeGUI:
             self.canvas.create_line(x, y, x + self.cell_size, y)
         if cell.walls["right"]:
             self.canvas.create_line(
-                x + self.cell_size, y,
-                x + self.cell_size, y + self.cell_size
+                x + self.cell_size, y, x + self.cell_size, y + self.cell_size
             )
         if cell.walls["bottom"]:
             self.canvas.create_line(
-                x, y + self.cell_size,
-                x + self.cell_size, y + self.cell_size
+                x, y + self.cell_size, x + self.cell_size, y + self.cell_size
             )
         if cell.walls["left"]:
             self.canvas.create_line(x, y, x, y + self.cell_size)
 
     def _draw_path(self, path, color="orange"):
-        for (r, c) in path:
+        for r, c in path:
             self._fill_cell(r, c, color)
 
     # --------------------------------------------------
@@ -145,7 +132,7 @@ class MazeGUI:
         self._fill_cell(r, c, "green")
 
     def _draw_target(self):
-        for (r, c) in self.maze.get_targets():
+        for r, c in self.maze.get_targets():
             self._fill_cell(r, c, "red")
 
     def _fill_cell(self, r, c, color):
@@ -153,38 +140,35 @@ class MazeGUI:
         y = r * self.cell_size
 
         self.canvas.create_rectangle(
-            x + 2, y + 2,
+            x + 2,
+            y + 2,
             x + self.cell_size - 2,
             y + self.cell_size - 2,
             fill=color,
-            outline=""
+            outline="",
         )
 
     # --------------------------------------------------
     # FUTURE: PATH DRAWING
     # --------------------------------------------------
 
-
-    
     def set_paths(self, moves):
-        self.paths = {
-            "phase1": [],
-            "return": [],
-            "phase2": []
-        }
+        self.paths = {"phase1": [], "return": [], "phase2": []}
 
         for _, r, c, phase in moves:
             self.paths[phase].append((r, c))
 
         self.phase_var = tk.StringVar(value="phase1")
-        
+
         tk.Label(self.control_frame, text="View Phase").pack()
 
         tk.OptionMenu(
             self.control_frame,
             self.phase_var,
-            "phase1", "return", "phase2",
-            command=self.update_phase_view
+            "phase1",
+            "return",
+            "phase2",
+            command=self.update_phase_view,
         ).pack()
 
         self.update_phase_view()

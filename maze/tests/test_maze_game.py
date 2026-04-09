@@ -2,13 +2,14 @@ import os
 import pytest
 
 from maze.maze_core import Maze
-from maze.maze_generators import MazeGeneratorCLI, GeneratorConfig
+from maze.maze_generators import MazeGeneratorCLI
 from maze.maze_game import GameRunner
 
 
 # --------------------------------------------------
 # Helpers
 # --------------------------------------------------
+
 
 class DummySolution:
     teamname = "dummy"
@@ -40,11 +41,13 @@ class WallCrashSolution:
     def get_step(self, cell):
         return "top"  # often invalid (wall)
 
+
 class StopSolution:
     teamname = "stop"
 
     def get_step(self, cell):
         return "stop"
+
 
 class FullSolution:
     teamname = "reference"
@@ -229,10 +232,12 @@ class FullSolution:
             state = parent[state]
 
         return list(reversed(path))
-    
+
+
 # --------------------------------------------------
 # Basic movement
 # --------------------------------------------------
+
 
 def test_step_moves_position():
     maze = Maze(5, 5, MazeGeneratorCLI())
@@ -241,20 +246,23 @@ def test_step_moves_position():
     runner = GameRunner(maze, DummySolution)
 
     start = runner.pos
-    assert runner.step("phase1") == True
+    assert runner.step("phase1")
 
     assert runner.pos != start
+
 
 def test_stop_command_step():
     maze = Maze(5, 5, MazeGeneratorCLI())
     maze.generate()
 
     runner = GameRunner(maze, StopSolution)
-    assert runner.step("phase1") == False
+    assert not runner.step("phase1")
+
 
 # --------------------------------------------------
 # Invalid move handling
 # --------------------------------------------------
+
 
 def test_invalid_direction_raises():
     maze = Maze(5, 5, MazeGeneratorCLI())
@@ -277,9 +285,11 @@ def test_wall_collision_raises():
         for _ in range(maze_size + 1):
             runner.step("phase1")
 
+
 # --------------------------------------------------
 # Tick cost behavior
 # --------------------------------------------------
+
 
 def test_tick_increases():
     maze = Maze(5, 5, MazeGeneratorCLI())
@@ -297,6 +307,7 @@ def test_tick_increases():
 # Phase progression
 # --------------------------------------------------
 
+
 def test_run_completes_and_creates_file(tmp_path):
     maze = Maze(10, 10, MazeGeneratorCLI())
     maze.generate()
@@ -307,6 +318,7 @@ def test_run_completes_and_creates_file(tmp_path):
     result_file = runner.run()
 
     assert os.path.exists(result_file)
+
 
 def test_run_completes_and_creates_file_stop_command(tmp_path):
     maze = Maze(10, 10, MazeGeneratorCLI())
@@ -319,9 +331,11 @@ def test_run_completes_and_creates_file_stop_command(tmp_path):
 
     assert os.path.exists(result_file)
 
+
 # --------------------------------------------------
 # Output file format
 # --------------------------------------------------
+
 
 def test_output_file_format(tmp_path):
     maze = Maze(10, 10, MazeGeneratorCLI())
@@ -349,6 +363,7 @@ def test_output_file_format(tmp_path):
 # Timeout behavior
 # --------------------------------------------------
 
+
 def test_timeout_stops_run():
     maze = Maze(5, 5, MazeGeneratorCLI())
     maze.generate()
@@ -364,6 +379,7 @@ def test_timeout_stops_run():
 # --------------------------------------------------
 # History recording
 # --------------------------------------------------
+
 
 def test_history_records_moves():
     maze = Maze(5, 5, MazeGeneratorCLI())

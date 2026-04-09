@@ -14,12 +14,8 @@ DIR_VECTORS = {
 }
 
 # Opposites
-OPPOSITE = {
-    "top": "bottom",
-    "bottom": "top",
-    "left": "right",
-    "right": "left"
-}
+OPPOSITE = {"top": "bottom", "bottom": "top", "left": "right", "right": "left"}
+
 
 def shortest_path(maze):
     start = maze.start
@@ -109,6 +105,7 @@ def compute_cost(prev_dir, new_dir):
 
     return 3  # turn
 
+
 def reconstruct_path(parent, start, end):
     path = []
     node = end
@@ -119,6 +116,7 @@ def reconstruct_path(parent, start, end):
 
     path.append(start)
     return list(reversed(path))
+
 
 def reconstruct_path_with_dir(parent, start, end, final_dir):
     path = []
@@ -134,6 +132,7 @@ def reconstruct_path_with_dir(parent, start, end, final_dir):
         node = parent[node]
 
     return list(reversed(path))
+
 
 def path_cost(path):
     cost = 0
@@ -160,6 +159,7 @@ def path_cost(path):
 
     return cost
 
+
 def is_interesting_maze(maze):
 
     sp = shortest_path(maze)
@@ -172,6 +172,7 @@ def is_interesting_maze(maze):
     fp_cost = path_cost(fp)
 
     return fp_cost < sp_cost
+
 
 def generate_until_interesting(maze):
     for _ in range(MAX_GEN_ATTEMPTS):

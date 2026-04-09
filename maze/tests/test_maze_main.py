@@ -6,8 +6,9 @@ from maze.maze_main import (
     corner_to_coord,
     parse_view_path,
     parse_args,
-    main
+    main,
 )
+
 
 def test_parse_pair_valid():
     assert parse_pair("10,20") == (10, 20)
@@ -21,6 +22,7 @@ def test_parse_pair_invalid():
     with pytest.raises(argparse.ArgumentTypeError):
         parse_pair("invalid")
 
+
 def test_corner_to_coord():
     rows, cols = 10, 20
 
@@ -29,8 +31,10 @@ def test_corner_to_coord():
     assert corner_to_coord(3, rows, cols) == (rows - 1, 0)
     assert corner_to_coord(4, rows, cols) == (0, 0)
 
+
 def test_corner_to_coord_invalid():
     assert corner_to_coord(99, 10, 10) is None
+
 
 def test_parse_view_path_full_file():
     path = "output/maze_1/map.txt"
@@ -46,11 +50,9 @@ def test_parse_view_path_short_name():
     path = "maze_2"
     assert parse_view_path(path) == "output/maze_2/map.txt"
 
+
 def test_parse_args_generate(monkeypatch):
-    monkeypatch.setattr(
-        "sys.argv",
-        ["prog", "--generate", "--size", "10,10"]
-    )
+    monkeypatch.setattr("sys.argv", ["prog", "--generate", "--size", "10,10"])
 
     args = parse_args()
 
@@ -60,15 +62,13 @@ def test_parse_args_generate(monkeypatch):
 
 
 def test_parse_args_view(monkeypatch):
-    monkeypatch.setattr(
-        "sys.argv",
-        ["prog", "--view", "maze_1"]
-    )
+    monkeypatch.setattr("sys.argv", ["prog", "--view", "maze_1"])
 
     args = parse_args()
 
     assert args.view == "maze_1"
     assert args.generate is False
+
 
 def test_main_generate_called(monkeypatch):
     called = {}
@@ -86,12 +86,13 @@ def test_main_generate_called(monkeypatch):
         loops=False,
         target_coordinates=None,
         set_start=None,
-        count=1
+        count=1,
     )
 
     main(args)
 
     assert called.get("generate") is True
+
 
 def test_main_view_called(monkeypatch):
     called = {}
@@ -109,7 +110,7 @@ def test_main_view_called(monkeypatch):
         loops=False,
         target_coordinates=None,
         set_start=None,
-        count=1
+        count=1,
     )
 
     main(args)
