@@ -137,7 +137,7 @@ def load_run_file(path):
     moves = []
 
     for line in lines[1:]:
-        tick, r, c, phase = line.strip().split(",")
+        tick, r, c, phase, _ = line.strip().split(",")
         moves.append((int(tick), int(r), int(c), phase))
 
     return scores, moves

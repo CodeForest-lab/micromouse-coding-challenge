@@ -1,5 +1,6 @@
 import os
 import shutil
+import pytest
 
 from maze.maze_core import Maze
 from maze.maze_generators import MazeGeneratorCLI
@@ -35,3 +36,7 @@ def test_save_and_load(tmp_path="maze/tests"):
     assert maze.get_targets() == loaded_maze.get_targets()
 
     shutil.rmtree(folder_path)
+
+def test_load_run_file(tmp_path="maze/tests"):
+    #TODO: Create unit test to catch changes in the loading of run files
+    pytest.skip("Test not implemented yet")

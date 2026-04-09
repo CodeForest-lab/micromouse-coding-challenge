@@ -115,7 +115,7 @@ def main_view(raw_path):
 def parse_view_path(raw_path: str) -> str:
 
     if ".txt" in raw_path and "/" in raw_path:
-        file_path = raw_path 
+        file_path = raw_path
     elif "/" in raw_path:
         file_path = os.path.join(raw_path, "map.txt")
     else:
