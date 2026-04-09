@@ -41,7 +41,7 @@ An optional visualization tool is available at:
 
 ## Quick Start
 
-As a competitor, you only need to edit the [solution.py](solution.py) file. This contains the Solution class and specifically the `get_step()` method that is entry point into your algorithm.
+As a competitor, you only need to edit the [solution/solution.py](solution/solution.py) file. This contains the Solution class and specifically the `get_step()` method that is entry point into your algorithm.
 
 To generate a standard maze of size 20x20 to use starting to develop your solution:
 ```sh
@@ -55,7 +55,7 @@ python maze.py --view maze_<index of maze>
 
 To run your solution on the maze, just run:
 ```sh
-python maze.py --run maze_<index of maze> --solution solution.py --gui
+python maze.py --run maze_<index of maze> --solution solution/solution.py --gui
 ```
 
 
